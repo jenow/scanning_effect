@@ -12,11 +12,12 @@ class ScanningEffect extends StatefulWidget {
     super.key,
     required this.child,
     this.scanningColor = Colors.blue,
-    this.borderLineColor = Colors.blue,
+    this.borderLineColor,
     this.scanningHeightOffset = 0.4,
     this.delay = const Duration(milliseconds: 700),
     this.duration = const Duration(milliseconds: 2800),
-    this.scanningLinePadding = const EdgeInsets.symmetric(horizontal: 32, vertical: 36),
+    this.scanningLinePadding =
+        const EdgeInsets.symmetric(horizontal: 32, vertical: 36),
   });
 
   /// The widget below this widget in the tree.
@@ -28,7 +29,7 @@ class ScanningEffect extends StatefulWidget {
   final Color scanningColor;
 
   /// The color of the border line
-  final Color borderLineColor;
+  final Color? borderLineColor;
 
   /// The percent of scanning animation with the view height
   final double scanningHeightOffset;
@@ -46,7 +47,8 @@ class ScanningEffect extends StatefulWidget {
   State<ScanningEffect> createState() => _ScanningEffectState();
 }
 
-class _ScanningEffectState extends State<ScanningEffect> with SingleTickerProviderStateMixin {
+class _ScanningEffectState extends State<ScanningEffect>
+    with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
 
   @override
@@ -79,11 +81,12 @@ class _ScanningEffectState extends State<ScanningEffect> with SingleTickerProvid
       fit: StackFit.expand,
       children: [
         widget.child,
-        CustomPaint(
-          painter: ScannerBorderPainter(
-            color: widget.borderLineColor,
+        if (widget.borderLineColor != null)
+          CustomPaint(
+            painter: ScannerBorderPainter(
+              color: widget.borderLineColor!,
+            ),
           ),
-        ),
         Padding(
           padding: widget.scanningLinePadding,
           child: ClipRect(
