@@ -61,7 +61,6 @@ class _ScanningEffectState extends State<ScanningEffect>
 
     _animationController
       ..addStatusListener((status) {
-        print(status);
         if (status == AnimationStatus.completed) {
           setState(() {
             _reversed = true;
