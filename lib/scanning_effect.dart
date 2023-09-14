@@ -50,6 +50,7 @@ class ScanningEffect extends StatefulWidget {
 class _ScanningEffectState extends State<ScanningEffect>
     with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
+  bool _reversed = false;
 
   @override
   void initState() {
@@ -60,15 +61,22 @@ class _ScanningEffectState extends State<ScanningEffect>
 
     _animationController
       ..addStatusListener((status) {
+        print(status);
         if (status == AnimationStatus.completed) {
+          setState(() {
+            _reversed = true;
+          });
           Future.delayed(
             widget.delay,
             () {
-              _animationController
-                ..reset()
-                ..forward(from: 0);
+              _animationController.reverse();
             },
           );
+        } else if (status == AnimationStatus.dismissed) {
+          setState(() {
+            _reversed = false;
+          });
+          _animationController.forward(from: 0);
         }
       })
       ..forward(from: 0);
@@ -94,6 +102,7 @@ class _ScanningEffectState extends State<ScanningEffect>
               animation: _animationController,
               scanningColor: widget.scanningColor,
               scanningHeightOffset: widget.scanningHeightOffset,
+              reversed: _reversed,
             ),
           ),
         ),
